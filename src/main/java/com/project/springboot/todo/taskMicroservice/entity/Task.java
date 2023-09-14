@@ -2,6 +2,9 @@ package com.project.springboot.todo.taskMicroservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 @Entity
 @Data
@@ -15,9 +18,19 @@ public class Task {
 
     @Column(name="task")
     private String task;
+
     @Column(name="isComplete")
     private boolean isComplete;
+
     @Column(name="userId")
     private Long userId;
+
+    public void setIsComplete(boolean isComplete){
+        this.isComplete = isComplete;
+    }
+
+    public boolean getIsComplete(){
+        return isComplete;
+    }
 
 }
