@@ -1,7 +1,7 @@
 # ToDo app api
 
 ## Overview
-This ToDo app API is a side project of mine developed to sharpen my skills in developing RESTful API using Spring Boot. This project serves as a proof of my dedication and commitment to continuous learning and improvement in the realm of backend development.
+This ToDo app API is a side project of mine developed to sharpen my skills in developing RESTful API using Spring Boot. This project serves to show my dedication and commitment to continuous learning and improvement in the realm of backend development.
 
 ## Project Objectives
 Primary objectives for this project are:
