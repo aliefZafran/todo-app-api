@@ -1,5 +1,6 @@
 package com.project.springboot.todo.taskMicroservice.controllers;
 
+import com.project.springboot.todo.taskMicroservice.dto.TaskDto;
 import com.project.springboot.todo.taskMicroservice.entity.Task;
 import com.project.springboot.todo.taskMicroservice.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,40 +19,38 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @GetMapping("/test")
-    public String returnString(){
-        return "Working";
-    }
-
     @GetMapping
     public ResponseEntity<List<Task>> getAllTask(){
         return new ResponseEntity<List<Task>>(taskService.getTasks(), HttpStatus.OK);
     }
+
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task){
+    public ResponseEntity<Task> createTask(@RequestBody TaskDto task){
         Task newTask = taskService.createTask(task);
         return new ResponseEntity<Task>(newTask, HttpStatus.CREATED);
     }
+
     @GetMapping("/{taskId}")
-    public ResponseEntity<Optional<Task>> getSingleTask(@PathVariable Long taskId){
-        Optional<Task> task = taskService.getTask(taskId);
+    public ResponseEntity<Optional<Task>> getSingleTask(@PathVariable Integer taskId){
+        Optional<Task> task = taskService.findTaskbyId(taskId);
         if(task.isPresent()){
-            return new ResponseEntity<Optional<Task>>(taskService.getTask(taskId), HttpStatus.OK);
+            return new ResponseEntity<Optional<Task>>(taskService.findTaskbyId(taskId), HttpStatus.OK);
         }else{
             return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long taskId){
-        return new ResponseEntity<Task>(taskService.updateTask(taskId), HttpStatus.OK);
+    public ResponseEntity<Task> updateTask(@PathVariable Integer taskId){
+        return new ResponseEntity<Task>(taskService.checkTask(taskId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<HttpStatus> deleteTask(@PathVariable Long taskId){
+    public ResponseEntity<HttpStatus> deleteTask(@PathVariable Integer taskId){
         taskService.deleteTask(taskId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTask(){
         taskService.deleteAllTask();

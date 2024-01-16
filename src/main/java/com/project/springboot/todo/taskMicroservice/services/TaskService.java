@@ -1,6 +1,8 @@
 package com.project.springboot.todo.taskMicroservice.services;
 
+import com.project.springboot.todo.taskMicroservice.dto.TaskDto;
 import com.project.springboot.todo.taskMicroservice.entity.Task;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +15,17 @@ public class TaskService{
     @Autowired
     private TaskRepository taskRepository;
 
-//    @Autowired
-//    public TaskService(TaskRepository taskRepository) {
-//        this.taskRepository = taskRepository;
-//    }
-
     //create a new task
-    public Task createTask(Task task){
-        if(task != null){
-            task.setIsComplete(false);
-            return taskRepository.save(task);
+    public Task createTask(TaskDto task){
+        if(task.getTask() != null){
+            Task newTask = new Task();
+            newTask.setTask(task.getTask());
+            newTask.setDescription(task.getDescription());
+            newTask.setIsComplete(false);
+            return taskRepository.save(newTask);
         }else{
             throw new IllegalArgumentException("Task cannot be null");
         }
-
     }
 
     //get all tasks
@@ -35,7 +34,7 @@ public class TaskService{
     }
 
     //find a task by id
-    public Optional<Task> getTask(Long taskId){
+    public Optional<Task> findTaskbyId(Integer taskId){
         if(taskId != null){
             return taskRepository.findById(taskId);
         }else{
@@ -44,8 +43,8 @@ public class TaskService{
 
     }
 
-    //update a task
-    public Task updateTask(Long taskId){
+    //check task whether complete or not
+    public Task checkTask(Integer taskId){
         Optional<Task> getTask = taskRepository.findById(taskId);
         if(getTask.isPresent()){
             Task task = getTask.get();
@@ -53,12 +52,12 @@ public class TaskService{
             return taskRepository.save(task);
         }
         else{
-            return null;
+            throw new EntityNotFoundException("Task not found with ID: " + taskId);
         }
     }
 
     //delete a task
-    public void deleteTask(Long taskId){
+    public void deleteTask(Integer taskId){
         if(taskId != null){
             taskRepository.deleteById(taskId);
         }else{

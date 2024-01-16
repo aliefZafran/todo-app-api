@@ -1,36 +1,44 @@
 package com.project.springboot.todo.taskMicroservice.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Data
 @Table(name = "task")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name="task")
     private String task;
 
+    @Column(name="description")
+    private String description;
+
     @Column(name="isComplete")
     private boolean isComplete;
 
-    @Column(name="userId")
-    private Long userId;
+//    @Column(name="userId")
+//    private Integer userId;
 
-    public void setIsComplete(boolean isComplete){
+    public Task(String task, String description, boolean isComplete){
+        this.task = task;
+        this.description = description;
         this.isComplete = isComplete;
     }
 
     public boolean getIsComplete(){
         return isComplete;
+    }
+
+    public void setIsComplete(boolean isComplete){
+        this.isComplete = isComplete;
     }
 
 }
